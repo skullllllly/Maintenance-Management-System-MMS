@@ -7,11 +7,15 @@ from app.db.session import get_db
 from app.services.minio_client import minio_client
 
 from app.api.auth import router as auth_router, users_router
+from app.api.ticket_images import router as ticket_images_router
+from app.services.image_processing import initialize_image_processor
+from app.services.minio_client import minio_client
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # startup events
     await minio_client.verify_bucket_existence()
+    await initialize_image_processor()
     yield
     # shutdown events
 
@@ -26,6 +30,7 @@ app = FastAPI(
 
 app.include_router(auth_router)
 app.include_router(users_router)
+app.include_router(ticket_images_router)
 
 
 #أعطاء الصلاحيات @

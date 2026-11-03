@@ -22,6 +22,12 @@ class Settings(BaseSettings):
   JWT_ALGORITHM:str="HS256"
   ACCESS_TOKEN_EXPIRE_MINUTES:int=60
 
+  IMAGE_MAX_BYTES:int =15 * 1024 * 1024 
+  IMAGE_BLUR_THRESHOLD: float =100.0
+  CNN_MODEL_PATH:str = "/models/resnet50_ticket_image.pt"
+  CNN_MODEL_DEVICE:str= "cpu"
+
+
   model_config=SettingsConfigDict  (
 
     env_file=".env",
@@ -36,7 +42,6 @@ class Settings(BaseSettings):
         f"postgresql+asyncpg://{self.POSTGRES_USER}:{self.POSTGRES_PASSWORD}"
         f"@{self.POSTGRES_SERVER}:{self.POSTGRES_PORT}/{self.POSTGRES_DB}"
     )
-
 
 
 settings=Settings()

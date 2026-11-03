@@ -42,22 +42,20 @@ async def get_all(
 
 async def create(db:AsyncSession,payload:TicketImageCreate)->TicketImage:
 
-    if not await db.get(MaintenanceTicket,payload.ticket_id):
-        raise ValueError("ticket does not exist")
-    
-    existing=await db.execute(
-        select(TicketImage).where(TicketImage.minio_object_name==payload.minio_object_name)
-    )
-    if existing.scalar_one_or_none() is not None:
-        raise ValueError("This file is already attached to another ticket.")
+    ticket=await db.get(MaintenanceTicket,payload.ticket_id)
+    if ticket is None:
+        raise ValueError("Ticket does not exist")
 
-    stmt=(
-        insert(TicketImage)
-        .values(**payload.model_dump())
-        .returning(TicketImage.image_id)
+    duplicate = await db.execute(
+        select(TicketImage.image_id).where(
+            TicketImage.minio_object_name == payload.minio_object_name
+        )
     )
-    result=await db.execute(stmt)
-    await db.commit()
+    if duplicate.scalar_one_or_none() is not None:
+        raise ValueError("This object is already attached an image record")
 
-    image_id=result.scalar_one()
-    return await get_by_id(db,image_id)
+    image=TicketImage(**payload.model_dump())
+    db.add(image)
+    await db.flush()
+    await db.refresh(image)
+    return image
