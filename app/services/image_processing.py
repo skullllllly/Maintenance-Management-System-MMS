@@ -45,9 +45,10 @@ class CNNFeatureExtractor:
             state_dict={
                 key.removeprefix("module."): value
                 for key,value in state_dict.items()
+                if not key.endswith("fc.weight") and not key.endswith("fc.bias")
             }
 
-            model.load_state_dict(state_dict,strict=True)
+            model.load_state_dict(state_dict, strict=False)
             model.fc=torch.nn.Identity()
             model.eval()
 

@@ -253,7 +253,7 @@ def test_image_upload_endpoint(client, clear_image_bytes):
         },
     )
 
-    assert response.status_code == 201
+    assert response.status_code == 200
 
     body = response.json()
     assert body["ticket_id"] == 1

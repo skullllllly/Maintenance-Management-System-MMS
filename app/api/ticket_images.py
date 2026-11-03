@@ -27,7 +27,7 @@ ALLOWED_IMAGE_TYPES={
 @router.post(
     "",
     response_model=TicketImageRead,
-    status_code=status.HTTP_201_CREATED,
+    status_code=status.HTTP_200_OK,
 )
 async def ingest_ticket_image(
     ticket_id:Annotated[int,Form(gt=0)],
