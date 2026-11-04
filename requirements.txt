@@ -27,3 +27,7 @@ pytest-asyncio==0.25.0
 pytest-cov==6.0.0
 httpx==0.28.1
 coverage==7.6.10
+
+psycopg2-binary==2.9.10
+opencv-python-headless==4.10.0.84
+numpy==1.26.4

@@ -1,66 +1,70 @@
-# Python bytecode and caches
+# Python bytecode and local packages
 __pycache__/
 *.py[cod]
 *$py.class
-.pytest_cache/
-.mypy_cache/
-.ruff_cache/
-.pyre/
-.pdm-build/
+*.so
+*.egg-info/
+*.egg
+build/
+dist/
+.eggs/
+site/
 
 # Virtual environments
 .venv/
 venv/
 env/
 ENV/
+.python-version
 
-# Environment and local secrets
-.env
-.env.*
-!.env.example
-
-# FastAPI / app runtime artifacts
+# Python tooling and test artifacts
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
 .coverage
 .coverage.*
 htmlcov/
-.pytest_cache/
+.tox/
+.nox/
+nosetests.xml
+coverage.xml
 
-# Build / packaging outputs
-build/
-dist/
-*.egg-info/
-.eggs/
-.Python
-pip-wheel-metadata/
-
-# Log files and diagnostics
-*.log
-logs/
-log/
-
-# Database and local persistence
-*.sqlite3
-*.db
-*.db-journal
-postgres_data/
-pgdata/
-minio_data/
-
-# IDE and editor files
+# Editors
 .vscode/
 .idea/
 *.swp
 *.swo
-*~
-
-# OS artifacts
 .DS_Store
 Thumbs.db
 
-# Local Docker / compose overrides
-docker-compose.override.yml
+# Local environment files
+.env
+.env.*
+!.env.example
 
-# Test artifacts
-.pytest_cache/
-.coverage
-htmlcov/
+# PyTorch weights and model artifacts
+*.pt
+*.pth
+*.ckpt
+models/
+checkpoints/
+weights/
+
+# Runtime data
+*.log
+logs/
+tmp/
+temp/
+uploads/
+cache/
+
+# Containers and database state
+postgres_data/
+minio_data/
+data/
+*.sqlite
+*.sqlite3
+*.db
+
+# Node tooling
+node_modules/

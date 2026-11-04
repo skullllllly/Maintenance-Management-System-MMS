@@ -3,7 +3,8 @@ from typing import TYPE_CHECKING
 
 from app.db.session import Base
 
-from sqlalchemy import Text,ForeignKey,String,DateTime,func
+from sqlalchemy import Text,ForeignKey,String,DateTime,func,Float,Boolean
+from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import Mapped,mapped_column,relationship
 
 if TYPE_CHECKING:
@@ -17,6 +18,19 @@ class TicketImage(Base):
 
     file_url:Mapped[str]=mapped_column(Text,nullable=False)
     minio_object_name:Mapped[str]=mapped_column(String(500),unique=True,nullable=False,index=True)
+
+    blur_variance:Mapped[float| None]=mapped_column(Float,nullable=True)
+    is_blurry:Mapped[bool|None]=mapped_column(Boolean,nullable=True)
+    cnn_features:Mapped[list[float] | None]=mapped_column(
+        JSONB,
+        nullable=True
+    )
+    processing_status:Mapped[str]=mapped_column(
+        String(20),
+        nullable=False,
+        default="PENDING",
+        server_default="PENDING",
+    )
 
     uploaded_at:Mapped[datetime]=mapped_column(DateTime(timezone=True),nullable=False,server_default=func.now())
 
