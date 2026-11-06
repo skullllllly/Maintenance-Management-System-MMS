@@ -23,6 +23,9 @@ class TicketImageRead(BaseModel):
     blur_variance:float |None
     is_blurry:bool| None
     cnn_features:list[float]| None
+    defect_label:str |None
+    defect_label_source:str |None
+    defect_labeled_at:datetime |None 
     processing_status: str
     uploaded_at:datetime
     

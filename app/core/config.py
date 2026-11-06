@@ -27,6 +27,12 @@ class Settings(BaseSettings):
   CNN_MODEL_PATH:str = "/models/resnet50_ticket_image.pt"
   CNN_MODEL_DEVICE:str= "cpu"
 
+  XGBOOST_MODEL_PATH: str = "models/xgboost_defect_classifier.joblib"
+  XGBOOST_MODEL_VERSION: str = "xgboost-defect-v1"
+  CLASSIFIER_LABELS: str =""
+
+  ML_MIN_PROBABILITY: float =0.0
+  ML_FEATURE_DIMENSION: int= 2048
 
   model_config=SettingsConfigDict  (
 

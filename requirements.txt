@@ -31,3 +31,9 @@ coverage==7.6.10
 psycopg2-binary==2.9.10
 opencv-python-headless==4.10.0.84
 numpy==1.26.4
+
+joblib==1.4.2
+numpy==1.26.4
+pandas==2.2.3
+scikit-learn==1.5.2
+xgboost==2.1.3

@@ -25,6 +25,15 @@ class TicketImage(Base):
         JSONB,
         nullable=True
     )
+
+    defect_label:Mapped[str |None ]=mapped_column(String(100),nullable=True)
+    defect_label_source:Mapped[str| None]=mapped_column(String(50),nullable=True)
+    defect_labeled_at:Mapped[datetime |None]=mapped_column(
+        DateTime(timezone=True),
+        nullable=True,
+        server_default=func.now()
+        )
+
     processing_status:Mapped[str]=mapped_column(
         String(20),
         nullable=False,

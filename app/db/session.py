@@ -1,3 +1,5 @@
+from collections.abc import AsyncIterator
+
 from typing import AsyncGenerator
 from sqlalchemy.ext.asyncio import  AsyncSession ,async_sessionmaker,create_async_engine
 from sqlalchemy.orm import DeclarativeBase
@@ -10,6 +12,13 @@ engine=create_async_engine(
     future=True,
     pool_pre_ping=True,
 ) 
+
+async_session=async_sessionmaker(
+    engine,
+    class=AsyncSession,
+    expire_on_commit=False
+)
+
 
 #async session factory 
 
