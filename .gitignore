@@ -46,9 +46,14 @@ Thumbs.db
 *.pt
 *.pth
 *.ckpt
+*.joblib
 models/
 checkpoints/
 weights/
+
+# Generated machine-learning training data
+training_data.csv
+training_data/
 
 # Runtime data
 *.log
@@ -68,3 +73,7 @@ data/
 
 # Node tooling
 node_modules/
+
+#alembic tool
+
+alembic/

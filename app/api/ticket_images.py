@@ -15,6 +15,17 @@ from app.services.image_processing import (
 )
 from app.services.minio_client import minio_client
 
+from app.curd.ticket_image import get_by_id
+from app.services.defect_classifier import(
+    DefectClassifierError,
+    defect_classifier
+)
+
+import logging
+import asyncio
+
+logger=logging.getLogger(__name__)
+
 router=APIRouter(prefix="/ticket-image", tags=["Ticket Image"])
 
 ALLOWED_IMAGE_TYPES={
@@ -95,3 +106,56 @@ async def ingest_ticket_image(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="Image metadata could not be persisted",
         )from exc
+
+
+@router.get(
+    "/{image_id}/defect-classification",
+    response_model=DefectPrediction,
+)
+async def classify_ticket_image(
+    image_id:int,
+    db:AsyncSession=Depends(get_db),
+) -> DefectPrediction
+    image=await get_by_id(db,image_id)
+
+    if image is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Ticket image not found ",
+        )
+
+    if image.processing_status != "COMPLETED":
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="Image processing is not copmlete"
+        )
+
+    if image.cnn_features is None :
+        raise HTTPException(
+            status_code=status.HTTP_409_CONFLICT,
+            detail="No CNN feature  are available for this image "
+        )
+
+    try :
+        return await asyncio.to_thread(
+            defect_classifier.predict,
+            image_id=image.image_id,
+            cnn_features=image.cnn_features
+        )
+
+    except DefectClassifierError as exc :
+        raise HTTPException(
+            status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+            detail=str(exc),
+        )from exc
+        
+    except Exception:
+        logger.exception(
+            "Unexpected classification failure for image_id=%s",
+            image.image_id
+        )
+
+        raise HTTPException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            detail= "Defect classification failed",
+        )

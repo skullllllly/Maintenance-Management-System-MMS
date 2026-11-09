@@ -10,12 +10,24 @@ from app.api.auth import router as auth_router, users_router
 from app.api.ticket_images import router as ticket_images_router
 from app.services.image_processing import initialize_image_processor
 from app.services.minio_client import minio_client
+from app.services.defect_classifier import(
+    DefectClassifierError,
+    defect_classifier
+)
+
+from app.services.image_processing import initialize_image_processor
+
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     # startup events
     await minio_client.verify_bucket_existence()
     await initialize_image_processor()
+    try:
+        defect_classifier.initialize()
+    except DefectClassifierError as exc:
+        raise RuntimeError(f"classifier startup failed : {exc}" ) from exc
+        
     yield
     # shutdown events
 
