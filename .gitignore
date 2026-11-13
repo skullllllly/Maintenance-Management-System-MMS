@@ -47,7 +47,7 @@ Thumbs.db
 *.pth
 *.ckpt
 *.joblib
-models/
+models/resnet50_ticket_image.pt
 checkpoints/
 weights/
 
@@ -77,3 +77,6 @@ node_modules/
 #alembic tool
 
 alembic/
+
+#dataset
+processed_dataset/

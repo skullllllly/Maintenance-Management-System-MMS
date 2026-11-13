@@ -8,6 +8,7 @@ from app.models.ticket import MaintenanceTicket
 from app.models.ticket_image import TicketImage
 from app.models.ticket_status_history import TicketStatusHistory
 from app.models.user import User
+from app.models.defect_training_sample import DefectTrainingSample
 
 __all__ = [
     "Assessment",
